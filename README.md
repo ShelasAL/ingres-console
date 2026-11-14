@@ -3,6 +3,28 @@
 
 ---
 
+## 🚀 Live deployment
+
+| | |
+|---|---|
+| **Console** | <https://ingres-console.vercel.app> |
+| **Repository** | <https://github.com/ShelasAL/ingres-console> |
+| **Hosting** | Vercel — Python runtime, `server.py` entrypoint, DuckDB file inside the function bundle |
+
+The deployment runs the ask-in-plain-English console: Starlette API + the no-build UI over the DuckDB record.
+
+**Bring your own key.** Open **Model settings** in the console and paste an OpenRouter / Gemini / OpenAI / custom-endpoint key. It stays in your browser's `localStorage` and travels only with your own questions. The deployment holds no API key, so without one it answers with the deterministic offline synthesizer (same numbers, plainer prose).
+
+Redeploy after a change:
+
+```powershell
+npx vercel deploy --prod --yes
+```
+
+Not deployed: the legacy Streamlit app (`app/`, port 8501). Streamlit needs a long-running process with websockets, which a serverless function cannot provide — it stays a local tool. Deployment details: [docs/FRAMEWORK.md](docs/FRAMEWORK.md).
+
+---
+
 ## 🌊 Overview & Problem Statement
 
 ### 🎯 The Problem

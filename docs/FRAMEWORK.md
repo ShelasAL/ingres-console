@@ -128,7 +128,7 @@ Key points:
 ```
 ├── README.md                 Project framing & headline numbers
 ├── run.txt                   How to start the console (8601)
-├── requirements.txt          Legacy (Streamlit) dependencies
+├── requirements.txt          Runtime dependencies (console + Vercel)
 ├── ingest_all_target_states.py  One-off ingestion of the source record
 ├── run_evaluation.py         Reruns the 30-case benchmark
 │
@@ -158,6 +158,10 @@ Key points:
 ├── docs/                      Schema, assumptions, evaluation report, prompts, this file
 └── docs/presentation/         Decks, planner scripts, PNG previews
 ```
+
+---
+
+Deployment-only files at the root: `server.py` (Vercel entrypoint), `vercel.json` (duration + bundled assets), `.vercelignore` (what is not uploaded), `requirements-streamlit.txt` (the legacy stack, not installed on Vercel) and `.python-version`.
 
 ---
 
@@ -238,3 +242,37 @@ cd "/d C:\Users\shela\Downloads\csep - Copy"
 Open `http://127.0.0.1:8601`. Demo questions: see `docs/presentation/INGRES_Demo_Deck.pptx` and the demo flow notes.
 
 **Tests:** `& "$env:LOCALAPPDATA\Python\pythoncore-3.15-64\python.exe" -m pytest -q` (66 passing).
+
+---
+
+## 8. Deployment (Vercel)
+
+| | |
+|---|---|
+| Console | <https://ingres-console.vercel.app> |
+| Repository | <https://github.com/ShelasAL/ingres-console> |
+| Runtime | Vercel Python 3.12, ASGI app loaded from `server.py` |
+
+**How it is wired**
+
+- `server.py` (repo root) puts the project root on `sys.path` and re-exports `app` from `frontend/api/server.py`. Vercel's Python runtime only looks for `app`/`application` in `app.py`, `index.py`, `server.py`, `main.py`, `wsgi.py` or `asgi.py`.
+- `vercel.json` pins the function's `maxDuration` to 60 s and bundles the two runtime assets via `includeFiles`: `data/synthetic/**` (the 9 MB DuckDB file) and `frontend/web/app/**` (the UI).
+- `requirements.txt` is the lean runtime set (duckdb, starlette, uvicorn, pandas, numpy, scikit-learn, pydantic, requests, loguru). The heavy Streamlit / ChromaDB / torch stack lives in `requirements-streamlit.txt` and is not installed on Vercel.
+- `.python-version` = `3.12`.
+- `.vercelignore` drops `app/`, `.streamlit/`, `tests/`, `docs/` and the deck binaries from the upload. **Paths are anchored with a leading `/`** — a bare `app` entry also matched `frontend/web/app`, which silently removed the UI from the function bundle.
+- The API opens DuckDB with `read_only=True`, so the function never writes to its bundled file; each request opens a fresh in-memory connection over the 9 MB file.
+
+**Bring your own key (BYOK).** No API key is set on the deployment (`/api/health` reports `key_present: false`). Each user pastes a provider key in **Model settings**; `localStorage` keeps it and every `/api/ask` call carries it. Without a key the deterministic synthesizer answers from the same retrieved rows.
+
+**Redeploy**
+
+```powershell
+npx vercel deploy --prod --yes            # from the repo root, after `vercel login`
+```
+
+**Known limits on Vercel**
+
+- Cold start ~2–3 s (imports duckdb + pandas); the first question after idle is slower.
+- Static files are served by the Python function, not the CDN — fine for a demo, but a `public/` split would be faster under load.
+- `GET /api/benchmark` runs the 30-case audit synchronously; it can take tens of seconds.
+- The Streamlit UI in `app/` cannot run here (long-lived process + websockets). It remains a local tool on port 8501.

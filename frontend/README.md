@@ -6,6 +6,7 @@ The Streamlit application is untouched and still runs on port 8501.
 - **API + static host:** Starlette / Uvicorn (no extra Python packages)
 - **UI:** dependency-free ES modules, hand-written SVG charts (no build step)
 - **Port:** 8601
+- **Deployed:** <https://ingres-console.vercel.app> — same `frontend/api/server.py`, loaded through the root `server.py` entrypoint
 
 ## Run
 
