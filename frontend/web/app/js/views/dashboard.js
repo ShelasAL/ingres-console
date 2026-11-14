@@ -1,8 +1,8 @@
 
 import { api } from '../api.js'
 import { pageHead, panelHead, skeleton, errorNote, fmt, esc, count } from '../ui.js'
-import { hBar, donut, miniBars } from '../charts.js?v=20261109-10'
-import { enter } from '../motion.js?v=20261109-10'
+import { hBar, donut, miniBars } from '../charts.js?v=20261114-01'
+import { enter } from '../motion.js?v=20261114-01'
 
 export async function mount(root) {
   root.innerHTML = skeleton()

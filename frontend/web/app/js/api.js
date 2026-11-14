@@ -19,7 +19,6 @@ export const api = {
   explore: (table, state) =>
     request('/api/explore?table=' + table + (state ? '&state=' + encodeURIComponent(state) : '')),
   performance: () => request('/api/performance'),
-  benchmark: () => request('/api/benchmark', { method: 'POST' }),
   ask: (query, settings, options = {}) =>
     request('/api/ask', {
       method: 'POST',

@@ -274,5 +274,5 @@ npx vercel deploy --prod --yes            # from the repo root, after `vercel lo
 
 - Cold start ~2–3 s (imports duckdb + pandas); the first question after idle is slower.
 - Static files are served by the Python function, not the CDN — fine for a demo, but a `public/` split would be faster under load.
-- `GET /api/benchmark` runs the 30-case audit synchronously; it can take tens of seconds.
+- The 30-case audit runs locally (`python run_evaluation.py`, about two minutes); it is not exposed as an endpoint because it would exceed the function limit.
 - The Streamlit UI in `app/` cannot run here (long-lived process + websockets). It remains a local tool on port 8501.

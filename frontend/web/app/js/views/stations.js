@@ -2,8 +2,8 @@
 import { api, downloadCsv } from '../api.js'
 import { takePendingStation } from '../store.js'
 import { pageHead, panelHead, spinner, errorNote, chip, esc, icon, humanize, fmt, dateOf, count } from '../ui.js'
-import { line } from '../charts.js?v=20261109-10'
-import { enter } from '../motion.js?v=20261109-10'
+import { line } from '../charts.js?v=20261114-01'
+import { enter } from '../motion.js?v=20261114-01'
 
 const LIMITS = [
   { key: 'ph', label: 'pH', min: 6.5, max: 8.5, limit: '6.5 – 8.5' },

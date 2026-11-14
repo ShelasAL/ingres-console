@@ -2,8 +2,8 @@
 import { api, downloadCsv } from '../api.js'
 import { getSettings } from '../store.js'
 import { pageHead, badge, chip, markdownish, esc, errorNote, icon, copyText, humanize, fmt } from '../ui.js'
-import { line, hBar } from '../charts.js?v=20261109-10'
-import { enter } from '../motion.js?v=20261109-10'
+import { line, hBar } from '../charts.js?v=20261114-01'
+import { enter } from '../motion.js?v=20261114-01'
 
 const SUGGESTIONS = [
   'What is the fluoride level in Nalgonda wells?',

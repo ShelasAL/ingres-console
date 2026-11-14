@@ -1194,56 +1194,6 @@ def performance(request):
     })
 
 
-def benchmark(request):
-    from ingres.evaluation.metrics import load_test_cases
-    from ingres.generation.context_assembler import assemble_context
-    from ingres.generation.llm_client import LLMClient
-    from ingres.generation.response_generator import generate_response
-    from ingres.retrieval.coverage_detector import check_coverage
-    from ingres.retrieval.query_router import route_query
-    from ingres.retrieval.text_to_sql import execute_query
-    from ingres.retrieval.vector_search import semantic_search
-
-    client = LLMClient(provider="openrouter", api_key="")  # deterministic offline audit
-    con = db()
-    results = []
-    try:
-        for case in load_test_cases():
-            t0 = time.time()
-            routed = route_query(case.query, llm_client=client)
-            coverage = check_coverage(case.query, routed.entities, con)
-            sql_res = execute_query(case.query, routed.entities, routed.intent, con, client)
-            chunks = semantic_search(case.query, n_results=1) if (not sql_res.success or sql_res.row_count == 0) else []
-            ctx = assemble_context(sql_res, chunks, coverage, routed.intent)
-            resp = generate_response(case.query, ctx, client)
-            latency = round((time.time() - t0) * 1000, 1)
-            has_prov = bool(resp.sources or resp.evidence_list)
-            if case.category == "edge" and case.expected_type == "out_of_range_temporal":
-                passed = coverage.status == "OUT_OF_SCOPE"
-            elif case.expected_coverage_status == "FULL":
-                passed = sql_res.row_count > 0 and has_prov
-            elif case.category == "ambiguous":
-                passed = coverage.status in ("INSUFFICIENT", "PARTIAL")
-            elif case.category == "incomplete":
-                passed = coverage.status in ("PARTIAL", "FULL") and (sql_res.row_count > 0 or len(chunks) > 0)
-            else:
-                passed = sql_res.row_count > 0 and has_prov
-            results.append({
-                "id": case.id, "category": case.category, "query": case.query,
-                "intent": routed.intent, "coverage": coverage.status,
-                "rows": sql_res.row_count, "confidence": resp.confidence,
-                "state": resp.state, "latency_ms": latency, "passed": bool(passed),
-            })
-        passed_n = sum(1 for r in results if r["passed"])
-        return ok({"passed": passed_n, "total": len(results),
-                   "pass_rate": round(passed_n * 100.0 / max(len(results), 1), 1),
-                   "results": results})
-    except Exception as exc:
-        return fail(str(exc), 500)
-    finally:
-        con.close()
-
-
 def health(request):
     return ok({
         "status": "ok",
@@ -1267,7 +1217,6 @@ routes = [
     Route("/api/explore", explore),
     Route("/api/ask", ask, methods=["POST"]),
     Route("/api/performance", performance),
-    Route("/api/benchmark", benchmark, methods=["POST"]),
 ]
 
 if DIST.exists():

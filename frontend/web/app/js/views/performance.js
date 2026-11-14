@@ -1,8 +1,8 @@
 
 import { api } from '../api.js'
-import { pageHead, panelHead, spinner, errorNote, emptyState, esc, icon, humanize, fmt, count } from '../ui.js'
-import { hBar } from '../charts.js?v=20261109-10'
-import { enter } from '../motion.js?v=20261109-10'
+import { pageHead, panelHead, spinner, errorNote, esc, count } from '../ui.js'
+import { hBar } from '../charts.js?v=20261114-01'
+import { enter } from '../motion.js?v=20261114-01'
 
 export async function mount(root) {
   root.innerHTML = spinner('Loading performance…')
@@ -76,61 +76,12 @@ export async function mount(root) {
 
     <section class="panel panel-pad">
       ${panelHead(
-        'Live validation suite',
-        'Re-runs all 30 documented questions against the current database with the deterministic offline engine, then reports each case.',
-        `<button class="btn primary sm" id="run-audit">${icon('play', 12)} Run benchmark</button>`
+        'Reproducing this audit',
+        'The 30 documented questions run offline from the repository, not from the deployed console.'
       )}
-      <div id="audit-body">${emptyState('No run in this session', 'Run the suite to execute all 30 questions against the live database.', 'bolt')}</div>
-      <div id="perf-error"></div>
+      <div class="table-note">Run <span class="mono">python run_evaluation.py</span> to regenerate the figures on this page.</div>
     </section>`
 
   enter(root)
 
-  const btn = root.querySelector('#run-audit')
-  const body = root.querySelector('#audit-body')
-  const err = root.querySelector('#perf-error')
-
-  btn.addEventListener('click', async () => {
-    btn.disabled = true
-    btn.innerHTML = `<span class="spinner" aria-hidden="true"></span> Running…`
-    body.innerHTML = spinner(`Executing ${o.cases} questions…`)
-    err.innerHTML = ''
-    try {
-      const audit = await api.benchmark()
-      const totalMs = audit.results.reduce((s, r) => s + (r.latency_ms || 0), 0)
-      const failed = audit.results.length - audit.passed
-      body.innerHTML = `
-        <div class="audit-summary">
-          <span><span class="n ${audit.pass_rate < 80 ? 'bad' : ''}">${audit.passed}/${audit.total}</span> passed</span>
-          <span class="badge ${audit.pass_rate >= 80 ? 'ok' : 'warn'}">${audit.pass_rate}% this run</span>
-          <div class="audit-meta">
-            <span>${failed ? `${failed} case${failed === 1 ? '' : 's'} for review` : 'No cases for review'}</span>
-            <span>${fmt(Math.round(totalMs))} ms total</span>
-            <span>Run at ${new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</span>
-          </div>
-        </div>
-        <div class="table-wrap medium">
-          <table>
-            <thead><tr><th>ID</th><th>Category</th><th>Intent</th><th>Coverage</th><th class="num">Rows</th><th>Confidence</th><th class="num">Latency</th><th>Status</th></tr></thead>
-            <tbody>${audit.results.map((r) => `<tr>
-              <td class="id">${esc(r.id)}</td>
-              <td>${esc(humanize(r.category))}</td>
-              <td>${esc(humanize(r.intent))}</td>
-              <td>${esc(humanize(r.coverage))}</td>
-              <td class="num">${r.rows}</td>
-              <td>${esc(humanize(r.confidence))}</td>
-              <td class="num">${r.latency_ms} ms</td>
-              <td><span class="badge ${r.passed ? 'ok' : 'bad'}">${r.passed ? 'pass' : 'review'}</span></td>
-            </tr>`).join('')}</tbody>
-          </table>
-        </div>`
-      enter(body)
-    } catch (e) {
-      body.innerHTML = ''
-      err.innerHTML = errorNote(e.message)
-    } finally {
-      btn.disabled = false
-      btn.innerHTML = `${icon('play', 12)} Run benchmark`
-    }
-  })
 }
