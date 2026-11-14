@@ -1249,6 +1249,8 @@ def health(request):
         "status": "ok",
         "db": str(DB_PATH),
         "db_exists": DB_PATH.exists(),
+        "static": str(DIST),
+        "static_exists": DIST.exists(),
         "provider": os.getenv("LLM_PROVIDER", "openrouter"),
         "key_present": bool(os.getenv("OPENROUTER_API_KEY") or os.getenv("GEMINI_API_KEY") or os.getenv("OPENAI_API_KEY")),
     })

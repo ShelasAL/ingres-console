@@ -29,3 +29,5 @@ docs/presentation/*.docx
 # OS
 Thumbs.db
 .DS_Store
+
+.vercel
