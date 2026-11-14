@@ -1,0 +1,26 @@
+# Uploaded to Vercel but not needed by the deployed console.
+.git
+.github
+.vercel
+.dsh-plugins
+.pytest_cache
+.coverage
+__pycache__
+**/__pycache__
+*.pyc
+
+# Legacy Streamlit UI (needs a long-running process; not deployable here)
+app
+.streamlit
+roomiee
+
+# Not needed at runtime — cuts ~10 MB from the upload
+tests
+docs
+frontend/screenshots
+frontend/capture_console.mjs
+
+# Documents and decks
+*.pptx
+*.docx
+*.pdf

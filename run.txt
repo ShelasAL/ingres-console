@@ -1,0 +1,14 @@
+INGRES CONSOLE — RUN COMMAND (Windows Command Prompt)
+====================================================
+
+Run these commands in Command Prompt (cmd.exe):
+
+cd /d "C:\Users\shela\Downloads\csep - Copy"
+"%LOCALAPPDATA%\Python\pythoncore-3.15-64\python.exe" -m uvicorn frontend.api.server:app --host 127.0.0.1 --port 8601
+
+Then open:
+http://127.0.0.1:8601/#/dashboard
+
+Keep the Command Prompt window open while using the app. Stop the server with Ctrl+C.
+
+The Streamlit app is separate and continues to use port 8501.

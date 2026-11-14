@@ -1,0 +1,311 @@
+{
+  "normal_cases": [
+    {
+      "id": "TC-N-001",
+      "query": "What is the pre-monsoon water level in Jaipur district for 2022?",
+      "expected_intent": "STRUCTURED_LEVEL",
+      "expected_type": "structured_query",
+      "gold_keywords": ["mbgl", "jaipur", "pre_monsoon"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns numeric depth_to_water_mbgl value with well_id provenance and measurement_date for Jaipur, 2022, pre_monsoon season"
+    },
+    {
+      "id": "TC-N-002",
+      "query": "Which districts in Rajasthan are over-exploited?",
+      "expected_intent": "STRUCTURED_ASSESSMENT",
+      "expected_type": "structured_query",
+      "gold_keywords": ["over_exploited", "rajasthan", "bikaner"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Lists districts with category=over_exploited from assessment_units for Rajasthan"
+    },
+    {
+      "id": "TC-N-003",
+      "query": "What is the fluoride level in Nalgonda wells?",
+      "expected_intent": "STRUCTURED_QUALITY",
+      "expected_type": "structured_query",
+      "gold_keywords": ["fluoride", "nalgonda", "mg/L"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns fluoride_mg_l values for Nalgonda with well_id and sample_date"
+    },
+    {
+      "id": "TC-N-004",
+      "query": "Show me the water level trend in Jaipur from 2015 to 2023",
+      "expected_intent": "STRUCTURED_LEVEL",
+      "expected_type": "structured_query",
+      "gold_keywords": ["trend", "jaipur", "year", "mbgl"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns year-wise average depth_to_water_mbgl for Jaipur with ≥5 years of data"
+    },
+    {
+      "id": "TC-N-005",
+      "query": "Is Mehsana district safe or over-exploited?",
+      "expected_intent": "STRUCTURED_ASSESSMENT",
+      "expected_type": "structured_query",
+      "gold_keywords": ["mehsana", "over_exploited", "category"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns the GEC category and stage_of_extraction_pct for Mehsana"
+    },
+    {
+      "id": "TC-N-006",
+      "query": "What is the TDS level in Bikaner groundwater?",
+      "expected_intent": "STRUCTURED_QUALITY",
+      "expected_type": "structured_query",
+      "gold_keywords": ["tds", "bikaner", "mg/L"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns tds_mg_l for Bikaner wells with potability flag"
+    },
+    {
+      "id": "TC-N-007",
+      "query": "How many wells are monitored in Punjab?",
+      "expected_intent": "STRUCTURED_LEVEL",
+      "expected_type": "structured_query",
+      "gold_keywords": ["wells", "punjab"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": false,
+      "acceptance_criterion": "Returns count of wells in Punjab from the wells table"
+    },
+    {
+      "id": "TC-N-008",
+      "query": "What is the post-monsoon water level in Patna for 2020?",
+      "expected_intent": "STRUCTURED_LEVEL",
+      "expected_type": "structured_query",
+      "gold_keywords": ["patna", "post_monsoon", "2020", "mbgl"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns depth_to_water_mbgl for Patna post_monsoon 2020 readings"
+    },
+    {
+      "id": "TC-N-009",
+      "query": "What is the groundwater recharge in Sangrur district?",
+      "expected_intent": "STRUCTURED_ASSESSMENT",
+      "expected_type": "structured_query",
+      "gold_keywords": ["recharge", "sangrur", "mcm"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns annual_gw_recharge_mcm for Sangrur from assessment_units"
+    },
+    {
+      "id": "TC-N-010",
+      "query": "List all safe groundwater districts in Karnataka",
+      "expected_intent": "STRUCTURED_ASSESSMENT",
+      "expected_type": "structured_query",
+      "gold_keywords": ["safe", "karnataka"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns Karnataka districts with category=safe from assessment_units"
+    },
+    {
+      "id": "TC-N-011",
+      "query": "What is the pH of groundwater in Chennai?",
+      "expected_intent": "STRUCTURED_QUALITY",
+      "expected_type": "structured_query",
+      "gold_keywords": ["ph", "chennai"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns ph values for Chennai wells"
+    },
+    {
+      "id": "TC-N-012",
+      "query": "How deep is the water table in Ludhiana?",
+      "expected_intent": "STRUCTURED_LEVEL",
+      "expected_type": "structured_query",
+      "gold_keywords": ["ludhiana", "mbgl", "depth"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns mean depth_to_water_mbgl for Ludhiana wells"
+    }
+  ],
+  "edge_cases": [
+    {
+      "id": "TC-E-001",
+      "query": "What is the water level in Bikaner in 1982?",
+      "expected_intent": "TEMPORAL_OUT_OF_RANGE",
+      "expected_type": "out_of_range_temporal",
+      "gold_keywords": ["2015", "not available", "1982"],
+      "expected_coverage_status": "OUT_OF_SCOPE",
+      "should_have_provenance": false,
+      "acceptance_criterion": "System returns OUT_OF_SCOPE coverage with message that data starts from 2015; no numeric value fabricated"
+    },
+    {
+      "id": "TC-E-002",
+      "query": "What will the water level be in Jaipur in 2035?",
+      "expected_intent": "TEMPORAL_OUT_OF_RANGE",
+      "expected_type": "out_of_range_temporal",
+      "gold_keywords": ["future", "not available", "forecast"],
+      "expected_coverage_status": "OUT_OF_SCOPE",
+      "should_have_provenance": false,
+      "acceptance_criterion": "System returns OUT_OF_SCOPE with message that no forecast data is available"
+    },
+    {
+      "id": "TC-E-003",
+      "query": "Is the water table rising or falling in Andaman Islands?",
+      "expected_intent": "UNSUPPORTED",
+      "expected_type": "coverage_gap",
+      "gold_keywords": ["not available", "andaman"],
+      "expected_coverage_status": "INSUFFICIENT",
+      "should_have_provenance": false,
+      "acceptance_criterion": "System flags location not in database and suggests supported states"
+    },
+    {
+      "id": "TC-E-004",
+      "query": "Show me artesian well data in Patna",
+      "expected_intent": "STRUCTURED_LEVEL",
+      "expected_type": "edge_artesian",
+      "gold_keywords": ["patna", "artesian", "confined"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns Patna piezometer wells with aquifer_type=confined and shallow depths (artesian condition)"
+    },
+    {
+      "id": "TC-E-005",
+      "query": "What is the water quality of Mars aquifers?",
+      "expected_intent": "UNSUPPORTED",
+      "expected_type": "out_of_scope",
+      "gold_keywords": ["scope", "india", "not available"],
+      "expected_coverage_status": "OUT_OF_SCOPE",
+      "should_have_provenance": false,
+      "acceptance_criterion": "System returns OUT_OF_SCOPE without any fabricated data about Mars"
+    },
+    {
+      "id": "TC-E-006",
+      "query": "What is the declining trend in north India groundwater?",
+      "expected_intent": "AMBIGUOUS_LOCATION",
+      "expected_type": "ambiguous_location",
+      "gold_keywords": ["specify", "district", "ambiguous"],
+      "expected_coverage_status": "INSUFFICIENT",
+      "should_have_provenance": false,
+      "acceptance_criterion": "System flags vague location 'north India' and asks for specific district/state"
+    },
+    {
+      "id": "TC-E-007",
+      "query": "Why is groundwater declining in over-exploited areas?",
+      "expected_intent": "SEMANTIC_CONCEPTUAL",
+      "expected_type": "conceptual_query",
+      "gold_keywords": ["extraction", "recharge", "agriculture"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": false,
+      "acceptance_criterion": "System returns a conceptual explanation using knowledge base (not hallucinated numeric values)"
+    },
+    {
+      "id": "TC-E-008",
+      "query": "What is the fluoride level in Barmer in 1995?",
+      "expected_intent": "TEMPORAL_OUT_OF_RANGE",
+      "expected_type": "out_of_range_temporal",
+      "gold_keywords": ["not available", "1995", "2015"],
+      "expected_coverage_status": "OUT_OF_SCOPE",
+      "should_have_provenance": false,
+      "acceptance_criterion": "System detects 1995 < 2015 and returns OUT_OF_SCOPE for temporal coverage"
+    }
+  ],
+  "incomplete_cases": [
+    {
+      "id": "TC-I-001",
+      "query": "What is the arsenic level in Jaipur groundwater?",
+      "expected_intent": "STRUCTURED_QUALITY",
+      "expected_type": "partial_data",
+      "gold_keywords": ["arsenic", "jaipur", "missing", "not available"],
+      "expected_coverage_status": "PARTIAL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns available records and explicitly states arsenic data is limited/not available for Jaipur; suggests Bihar/UP for arsenic queries"
+    },
+    {
+      "id": "TC-I-002",
+      "query": "Show me all water level readings for Nalgonda from 2015 to 2023",
+      "expected_intent": "STRUCTURED_LEVEL",
+      "expected_type": "partial_data",
+      "gold_keywords": ["nalgonda", "missing", "gap"],
+      "expected_coverage_status": "PARTIAL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns available records AND flags missing records (25% gap created by generator); shows data_quality_flag distribution"
+    },
+    {
+      "id": "TC-I-003",
+      "query": "Is the groundwater in Surat potable?",
+      "expected_intent": "STRUCTURED_QUALITY",
+      "expected_type": "partial_data",
+      "gold_keywords": ["surat", "potability", "tds", "saline"],
+      "expected_coverage_status": "PARTIAL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns potability assessment with TDS values; flags high salinity; notes coverage of wells sampled vs total"
+    },
+    {
+      "id": "TC-I-004",
+      "query": "What is the trend of water table in Osmanabad?",
+      "expected_intent": "STRUCTURED_LEVEL",
+      "expected_type": "partial_data",
+      "gold_keywords": ["osmanabad", "trend", "missing"],
+      "expected_coverage_status": "PARTIAL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Computes trend from available data; flags that Marathwada hard-rock wells have limited monitoring"
+    },
+    {
+      "id": "TC-I-005",
+      "query": "What is the iron content in Hyderabad wells?",
+      "expected_intent": "STRUCTURED_QUALITY",
+      "expected_type": "partial_data",
+      "gold_keywords": ["iron", "hyderabad"],
+      "expected_coverage_status": "PARTIAL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns iron_mg_l for available wells; notes that ~40% of wells lack quality samples"
+    },
+    {
+      "id": "TC-I-006",
+      "query": "Compare pre-monsoon and post-monsoon levels in all Karnataka districts",
+      "expected_intent": "STRUCTURED_LEVEL",
+      "expected_type": "partial_data",
+      "gold_keywords": ["karnataka", "pre_monsoon", "post_monsoon"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Returns seasonal comparison for Karnataka districts; shows which districts have complete seasonal data vs gaps"
+    }
+  ],
+  "ambiguous_cases": [
+    {
+      "id": "TC-A-001",
+      "query": "What is the water level near the river?",
+      "expected_intent": "AMBIGUOUS_LOCATION",
+      "expected_type": "ambiguous_location",
+      "gold_keywords": ["specify", "location", "district"],
+      "expected_coverage_status": "INSUFFICIENT",
+      "should_have_provenance": false,
+      "acceptance_criterion": "System identifies vague location and asks for district or state specification"
+    },
+    {
+      "id": "TC-A-002",
+      "query": "How is the groundwater in east India?",
+      "expected_intent": "AMBIGUOUS_LOCATION",
+      "expected_type": "ambiguous_location",
+      "gold_keywords": ["specify", "east india", "district"],
+      "expected_coverage_status": "INSUFFICIENT",
+      "should_have_provenance": false,
+      "acceptance_criterion": "System flags 'east India' as too vague and suggests specific states like Bihar, West Bengal"
+    },
+    {
+      "id": "TC-A-003",
+      "query": "What is the water level in Salem?",
+      "expected_intent": "STRUCTURED_LEVEL",
+      "expected_type": "structured_query",
+      "gold_keywords": ["salem", "tamil nadu", "mbgl"],
+      "expected_coverage_status": "FULL",
+      "should_have_provenance": true,
+      "acceptance_criterion": "Resolves Salem to Salem district, Tamil Nadu and returns level data"
+    },
+    {
+      "id": "TC-A-004",
+      "query": "Show me groundwater quality in the drought region",
+      "expected_intent": "AMBIGUOUS_LOCATION",
+      "expected_type": "ambiguous_location",
+      "gold_keywords": ["specify", "marathwada", "drought"],
+      "expected_coverage_status": "INSUFFICIENT",
+      "should_have_provenance": false,
+      "acceptance_criterion": "System identifies ambiguous 'drought region' and prompts for specific region (e.g., Marathwada)"
+    }
+  ]
+}
+

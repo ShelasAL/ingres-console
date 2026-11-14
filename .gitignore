@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.venv/
+venv/
+
+# Local secrets
+.env
+.env.local
+
+# Generated stores / logs
+data/chroma_store/
+*.log
+
+# Vercel
+.vercel
+
+# Local scratch that is not part of the project
+.dsh-plugins/
+roomiee/
+
+# Generated deck artefacts (sources stay in git)
+docs/presentation/*.pptx
+docs/presentation/*.pdf
+docs/presentation/*.docx
+
+# OS
+Thumbs.db
+.DS_Store

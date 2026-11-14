@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <title>INGRES — National Groundwater Intelligence</title>
+    <meta name="description" content="INGRES is a read-only groundwater intelligence console over the CGWB / NWIC monitoring record: 3,042 stations, 16,780 water-level readings and 11,978 laboratory samples, each answer cited to its source." />
+    <meta name="theme-color" content="#090a12" />
+    <script>
+      try {
+        const saved = localStorage.getItem('ingres-theme');
+        const theme = saved === 'light' || saved === 'dark' ? saved : (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        document.documentElement.dataset.theme = theme;
+      } catch (e) {}
+    </script>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230d1216'/%3E%3Cpath d='M16 6s7 7.5 7 12.2A7 7 0 0 1 9 18.2C9 13.5 16 6 16 6Z' fill='none' stroke='%2357cfc0' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="/styles.css?v=20261112-01" />
+    <link rel="stylesheet" href="/refinement.css?v=20261112-01" />
+  </head>
+  <body>
+    <a class="skip-link" href="#view">Skip to content</a>
+    <div id="root"></div>
+    <div class="toast-region" id="toast-region" role="status" aria-live="polite" aria-atomic="false"></div>
+    <div id="dialog-root"></div>
+    <script type="module" src="/js/app.js?v=20261112-01"></script>
+  </body>
+</html>
