@@ -16,8 +16,9 @@
 /.streamlit
 /roomiee
 
-# Not needed at runtime
-/tests
+# Not needed at runtime, except the benchmark fixtures the API reads
+/tests/test_*.py
+/tests/__pycache__
 /docs
 /frontend/screenshots
 /frontend/capture_console.mjs
