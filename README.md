@@ -19,7 +19,7 @@ The database answers first. A language model only rewrites what the database ret
 ## How it works
 
 1. **Understand.** The question is matched to an intent and a place (state or district).
-2. **Retrieve.** A reviewed, parameterised SQL query reads the DuckDB database.
+2. **Retrieve.** A reviewed, parameterized SQL query reads the DuckDB database.
 3. **Check.** A coverage detector decides whether the data supports the question.
 4. **Explain.** Totals, BIS exceedance lists and comparison facts are precomputed; the model writes the prose.
 5. **Show.** The answer returns with a summary, evidence, SQL, sources and a confidence level.
@@ -52,6 +52,8 @@ Potability and GEC categories are derived by rule in the schema, so the same thr
 
 ## Run locally
 
+Requires Python 3.12 or newer.
+
 ```powershell
 pip install -r requirements.txt
 python -m uvicorn frontend.api.server:app --host 127.0.0.1 --port 8601
@@ -67,7 +69,7 @@ An API key is optional. Without one, answers come from the deterministic synthes
 python -m pytest -q
 ```
 
-66 tests cover query plans, place matching, coverage, evidence formatting and provider handling.
+69 tests cover query plans, place matching, coverage, evidence formatting and provider handling.
 
 A 30-case evaluation (`python run_evaluation.py`) reports 83.3% pass rate, 100% provenance precision, 32 ms mean latency and 38 ms at P95.
 
